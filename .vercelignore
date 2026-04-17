@@ -1,0 +1,8 @@
+scripts/
+briefs/
+requirements.txt
+CONTENT_BRIEF_TEMPLATE.md
+SKILL.md
+*.py
+__pycache__/
+*.pyc
