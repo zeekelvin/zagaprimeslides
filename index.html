@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZagaPrime AI Hub — Carousel Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF7F2;--dark:#18100A;--terra:#C46945;--terra-l:#E8A87C;--terra-d:#9B4B2A;--line:#E0D8CE;--muted:#8A7D72;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;min-height:100vh;}
+.hero{background:var(--dark);padding:52px 48px 44px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;right:-60px;top:-60px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(196,105,69,.18) 0%,transparent 70%);pointer-events:none;}
+.brand{font-family:'DM Mono',monospace;font-size:11px;color:var(--terra-l);letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;}
+h1{font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(32px,5vw,56px);line-height:1.05;color:#fff;margin-bottom:12px;}
+h1 em{font-style:normal;color:var(--terra-l);}
+.hero-sub{color:rgba(255,255,255,.4);font-size:15px;font-weight:300;max-width:520px;line-height:1.7;}
+.stats{display:flex;gap:40px;margin-top:36px;padding-top:32px;border-top:1px solid rgba(255,255,255,.07);flex-wrap:wrap;}
+.sn{font-family:'Syne',sans-serif;font-weight:800;font-size:34px;color:var(--terra-l);line-height:1;}
+.sl{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;}
+.notice{background:var(--terra);padding:12px 48px;font-family:'DM Mono',monospace;font-size:12px;color:#fff;letter-spacing:.3px;}
+.main{max-width:1200px;margin:0 auto;padding:48px 48px 80px;}
+.section-head{margin-bottom:28px;}
+.section-head h2{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;}
+.section-head p{font-size:14px;color:var(--muted);margin-top:6px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.card{background:#fff;border:1px solid var(--line);transition:border-color .15s,transform .15s;}
+.card:hover{border-color:var(--terra);transform:translateY(-3px);}
+.card-thumb{height:200px;overflow:hidden;background:var(--dark);display:flex;align-items:center;justify-content:center;}
+.card-thumb img{width:100%;height:100%;object-fit:cover;}
+.no-thumb{color:rgba(255,255,255,.2);font-family:'DM Mono',monospace;font-size:12px;}
+.card-body{padding:20px;}
+.card-slug{font-family:'DM Mono',monospace;font-size:10px;color:var(--terra);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:17px;margin-bottom:6px;}
+.card-meta{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.btn{padding:8px 18px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;transition:.15s;}
+.btn-slides{border:1px solid var(--line);color:var(--muted);}
+.btn-slides:hover{background:var(--dark);color:#fff;border-color:var(--dark);}
+.btn-pkg{background:var(--terra);color:#fff;border:1px solid var(--terra);}
+.btn-pkg:hover{background:var(--terra-d);border-color:var(--terra-d);}
+.footer{background:var(--dark);padding:32px 48px;text-align:center;}
+.footer p{font-family:'DM Mono',monospace;font-size:12px;color:rgba(255,255,255,.3);}
+.footer strong{color:var(--terra-l);}
+@media(max-width:640px){.hero,.main,.notice,.footer{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="brand">ZAGAPRIME AI HUB</div>
+  <h1>Carousel <em>Library.</em></h1>
+  <p>All ZagaPrime Instagram carousel sets — slides, captions, and packages. Each collection is a deployable content drop.</p>
+  <div class="stats">
+    <div><div class="sn">3</div><div class="sl">Collections</div></div>
+    <div><div class="sn">130</div><div class="sl">Total Slides</div></div>
+    <div><div class="sn">1080</div><div class="sl">px Square</div></div>
+  </div>
+</div>
+<div class="notice">📍 From <strong>@zagaprimeai</strong> — Follow for daily AI systems, tools, and workflows that actually work.</div>
+<div class="main">
+  <div class="section-head">
+    <h2>All Collections</h2>
+    <p>3 collections · 130 slides total · Updated automatically on every push</p>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <div class="card-thumb"><img src="/codes/slides/01_COVER.png" alt="5 Secret Claude Codes + 100 Code Package" onerror="this.style.display='none'"></div>
+      <div class="card-body">
+        <div class="card-slug">codes</div>
+        <div class="card-title">5 Secret Claude Codes + 100 Code Package</div>
+        <div class="card-meta">1 carousel · 10 slides</div>
+        <div class="card-actions">
+          <a href="/codes/slides" class="btn btn-slides">View Slides</a>
+          <a href="/codes" class="btn btn-pkg">View Package</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-thumb"><img src="/connectors/slides/C01_What_Are_Connectors/01_COVER.png" alt="Claude Connectors — Install & Use Guide" onerror="this.style.display='none'"></div>
+      <div class="card-body">
+        <div class="card-slug">connectors</div>
+        <div class="card-title">Claude Connectors — Install & Use Guide</div>
+        <div class="card-meta">6 carousels · 60 slides</div>
+        <div class="card-actions">
+          <a href="/connectors/slides" class="btn btn-slides">View Slides</a>
+          <a href="/connectors" class="btn btn-pkg">View Package</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-thumb"><img src="/limiting-beliefs/slides/C01_AI_Is_Too_Complex/01_COVER.png" alt="AI Limiting Beliefs — 6 Carousels" onerror="this.style.display='none'"></div>
+      <div class="card-body">
+        <div class="card-slug">limiting-beliefs</div>
+        <div class="card-title">AI Limiting Beliefs — 6 Carousels</div>
+        <div class="card-meta">6 carousels · 60 slides</div>
+        <div class="card-actions">
+          <a href="/limiting-beliefs/slides" class="btn btn-slides">View Slides</a>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <p><strong>ZagaPrime AI Hub</strong> · Built with Claude · Hosted on Vercel · @zagaprimeai</p>
+</div>
+</body>
+</html>

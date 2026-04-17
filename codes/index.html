@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZagaPrime — 100 Secret Claude Codes</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF7F2; --bg2: #F3EDE3; --ink: #18100A;
+  --terra: #C46945; --terra-d: #9B4B2A; --terra-l: #E8A87C;
+  --muted: #8A7D72; --line: #E0D8CE; --pill: #F0E8DC;
+  --dark: #1A0D06;
+}
+* { margin:0;padding:0;box-sizing:border-box; }
+body { background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif; }
+
+.header {
+  background:var(--dark);padding:0;
+  position:relative;overflow:hidden;
+}
+.header-inner { padding:56px 56px 48px;position:relative;z-index:2; }
+.header::after {
+  content:'';position:absolute;right:-80px;top:-80px;
+  width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,105,69,.22) 0%,transparent 70%);
+}
+.brand { font-family:'Syne',sans-serif;font-weight:800;font-size:16px;
+  color:rgba(255,255,255,.5);letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:28px; }
+.brand span { color:var(--terra-l); }
+.header h1 { font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(36px,5vw,64px);line-height:1.05;color:#fff;
+  max-width:780px;margin-bottom:16px; }
+.header h1 em { font-style:normal;color:var(--terra-l); }
+.header p { color:rgba(255,255,255,.45);font-size:16px;
+  font-weight:300;max-width:560px;line-height:1.7; }
+.header-stats { display:flex;gap:48px;margin-top:40px;
+  padding-top:36px;border-top:1px solid rgba(255,255,255,.07); }
+.sn { font-family:'Syne',sans-serif;font-weight:800;
+  font-size:38px;color:var(--terra-l);line-height:1; }
+.sl { font-family:'DM Mono',monospace;font-size:10px;
+  color:rgba(255,255,255,.3);text-transform:uppercase;
+  letter-spacing:1.5px;margin-top:6px; }
+.notice {
+  margin:0 56px;margin-top:-1px;
+  background:var(--terra);padding:14px 24px;
+  font-family:'DM Mono',monospace;font-size:12px;
+  color:#fff;letter-spacing:.5px;
+  display:flex;align-items:center;gap:12px;
+}
+.notice strong { font-weight:600; }
+
+/* search bar */
+.search-wrap { padding:32px 56px 0;background:var(--bg2); }
+.search-row { display:flex;gap:12px;flex-wrap:wrap; }
+.search-input {
+  flex:1;min-width:200px;
+  padding:12px 20px;
+  border:1px solid var(--line);background:#fff;
+  font-family:'DM Sans',sans-serif;font-size:15px;color:var(--ink);
+  outline:none;
+}
+.search-input:focus { border-color:var(--terra); }
+.filter-btn {
+  padding:12px 20px;border:1px solid var(--line);
+  background:#fff;font-family:'DM Mono',monospace;
+  font-size:11px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;transition:.15s;
+}
+.filter-btn:hover,.filter-btn.active {
+  background:var(--terra);color:#fff;border-color:var(--terra); }
+
+/* category nav */
+.cat-nav {
+  padding:24px 56px 0;background:var(--bg2);
+  display:flex;gap:8px;flex-wrap:wrap;
+  border-bottom:1px solid var(--line);padding-bottom:0;
+}
+.cat-btn {
+  padding:10px 18px;
+  font-family:'DM Mono',monospace;font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;border:none;background:none;
+  border-bottom:3px solid transparent;
+  margin-bottom:-1px;transition:.15s;
+}
+.cat-btn:hover { color:var(--terra); }
+.cat-btn.active { color:var(--terra);border-bottom-color:var(--terra); }
+
+/* grid */
+.grid-wrap { max-width:1200px;margin:0 auto;padding:40px 56px 80px; }
+.section-head {
+  display:flex;align-items:center;gap:18px;
+  margin-bottom:24px;margin-top:12px;
+}
+.section-num {
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:52px;color:var(--line);line-height:1;letter-spacing:-2px;
+}
+.section-title {
+  font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
+}
+.section-desc { font-size:13px;color:var(--muted);margin-top:4px; }
+
+.codes-grid {
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:14px;margin-bottom:48px;
+}
+.code-card {
+  background:#fff;border:1px solid var(--line);
+  transition:border-color .15s,transform .15s;
+  cursor:default;
+  display:none;
+}
+.code-card.visible { display:block; }
+.code-card:hover { border-color:var(--terra);transform:translateY(-2px); }
+.card-top {
+  background:var(--ink);padding:14px 20px;
+  display:flex;align-items:center;gap:12px;
+}
+.code-trigger {
+  font-family:'DM Mono',monospace;font-weight:500;
+  font-size:15px;color:var(--terra-l);letter-spacing:.5px;
+}
+.code-num {
+  margin-left:auto;font-family:'DM Mono',monospace;
+  font-size:10px;color:rgba(255,255,255,.25);
+}
+.card-body { padding:18px 20px; }
+.code-name {
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:14px;margin-bottom:8px;color:var(--ink);
+}
+.code-desc { font-size:13px;line-height:1.65;color:var(--muted); }
+.code-example {
+  margin-top:12px;padding:10px 14px;
+  background:var(--pill);border-left:3px solid var(--terra);
+  font-family:'DM Mono',monospace;font-size:11px;
+  color:var(--terra-d);line-height:1.6;
+}
+.cat-tag {
+  display:inline-block;margin-top:10px;
+  background:var(--pill);border:1px solid var(--line);
+  color:var(--terra-d);font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;
+}
+.copy-mini {
+  float:right;margin-top:10px;
+  padding:5px 12px;border:1px solid var(--line);
+  background:transparent;font-family:'DM Mono',monospace;
+  font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;transition:.15s;
+  border-radius:2px;
+}
+.copy-mini:hover { background:var(--terra);color:#fff;border-color:var(--terra); }
+.copy-mini.copied { background:#22c55e;color:#fff;border-color:#22c55e; }
+
+.empty-msg {
+  grid-column:1/-1;text-align:center;
+  padding:60px;color:var(--muted);
+  font-family:'DM Mono',monospace;font-size:13px;
+}
+
+/* footer */
+.footer {
+  background:var(--dark);padding:40px 56px;
+  text-align:center;
+}
+.footer p { font-family:'DM Mono',monospace;font-size:12px;
+  color:rgba(255,255,255,.3);letter-spacing:.5px; }
+.footer strong { color:var(--terra-l); }
+
+@media(max-width:680px){
+  .header-inner,.search-wrap,.cat-nav,.grid-wrap,.footer,
+  .notice { padding-left:20px;padding-right:20px; }
+  .header-stats { gap:24px;flex-wrap:wrap; }
+  .section-num { font-size:36px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="brand">ZAGA<span>PRIME</span> AI HUB</div>
+    <h1>100 Secret<br><em>Claude Codes.</em></h1>
+    <p>Every code is a prompt prefix that unlocks a different mode in Claude. Copy any trigger, drop it before your prompt, and watch what changes.</p>
+    <div class="header-stats">
+      <div><div class="sn">100</div><div class="sl">Total Codes</div></div>
+      <div><div class="sn">10</div><div class="sl">Categories</div></div>
+      <div><div class="sn">Free</div><div class="sl">For You</div></div>
+    </div>
+  </div>
+</div>
+<div class="notice">
+  <span>📍</span>
+  <span>From <strong>@zagaprimeai</strong> — Follow for daily AI systems, tools, and workflows that actually work.</span>
+</div>
+
+<!-- SEARCH -->
+<div class="search-wrap">
+  <div class="search-row">
+    <input class="search-input" type="text" id="searchInput" placeholder="Search codes, names, or keywords..." oninput="filterCodes()">
+  </div>
+</div>
+
+<!-- CAT NAV -->
+<div class="cat-nav">
+  <button class="cat-btn active" onclick="setCategory('all',this)">All 100</button>
+  <button class="cat-btn" onclick="setCategory('voice',this)">Voice & Style</button>
+  <button class="cat-btn" onclick="setCategory('strategy',this)">Strategy</button>
+  <button class="cat-btn" onclick="setCategory('content',this)">Content</button>
+  <button class="cat-btn" onclick="setCategory('thinking',this)">Deep Thinking</button>
+  <button class="cat-btn" onclick="setCategory('business',this)">Business</button>
+  <button class="cat-btn" onclick="setCategory('creativity',this)">Creativity</button>
+  <button class="cat-btn" onclick="setCategory('analysis',this)">Analysis</button>
+  <button class="cat-btn" onclick="setCategory('people',this)">People & Comms</button>
+  <button class="cat-btn" onclick="setCategory('clarity',this)">Clarity</button>
+  <button class="cat-btn" onclick="setCategory('action',this)">Action</button>
+</div>
+
+<div class="grid-wrap">
+<div id="emptyMsg" class="codes-grid" style="display:none"><div class="empty-msg">No codes match your search. Try different keywords.</div></div>
+<div class="codes-grid" id="codesGrid"></div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Part of the <strong>ZagaPrime AI Hub</strong> content system · Follow <strong>@zagaprimeai</strong> for more · Share freely, credit kindly.</p>
+</div>
+
+<script>
+const CODES = [
+  // ── VOICE & STYLE (10) ─────────────────────────────────────────────────
+  {n:1,t:"/self",name:"Mirror Mode",cat:"voice",
+   desc:"Claude mimics your writing style so every output sounds like it came from you — not an AI.",
+   ex:"/self Write a LinkedIn post about why automation matters for entrepreneurs."},
+  {n:2,t:"/tone [adjective]",name:"Tone Dial",cat:"voice",
+   desc:"Set Claude's exact tone. Confident, casual, urgent, warm — one word shifts the whole output.",
+   ex:"/tone bold Write my sales email for our new AI service."},
+  {n:3,t:"/voice [person]",name:"Voice Borrow",cat:"voice",
+   desc:"Write in the communication style of a known figure or archetype.",
+   ex:"/voice Malcolm Gladwell Explain why AI is the next industrial revolution."},
+  {n:4,t:"/casual",name:"Street Level",cat:"voice",
+   desc:"Drops all corporate language. Outputs like a smart friend talking — not a consultant reporting.",
+   ex:"/casual Explain how to set up an n8n workflow to automate my email follow-ups."},
+  {n:5,t:"/signal",name:"Noise Remover",cat:"voice",
+   desc:"Claude strips filler, hedges, and fluff. Returns only the sentences that actually matter.",
+   ex:"/signal Here's my draft website homepage copy: [paste copy]"},
+  {n:6,t:"/punch",name:"Impact Amplifier",cat:"voice",
+   desc:"Rewrites any text to land harder. Shorter sentences. Sharper words. More power per line.",
+   ex:"/punch Rewrite this caption so it stops people mid-scroll: [paste caption]"},
+  {n:7,t:"/hook [platform]",name:"Platform Hook",cat:"voice",
+   desc:"Writes an opening line designed to stop the scroll specifically on the platform you name.",
+   ex:"/hook Instagram My topic is 5 Claude codes that change how you prompt."},
+  {n:8,t:"/mirror [sample]",name:"Deep Mirror",cat:"voice",
+   desc:"Feed Claude 3 examples of your writing and it locks in your exact voice for the session.",
+   ex:"/mirror [paste 3 samples of your writing] Now write a thread about AI automation."},
+  {n:9,t:"/headline",name:"Headline Machine",cat:"voice",
+   desc:"Generates 10 headline variations for any idea — short, long, curiosity, direct, emotional.",
+   ex:"/headline Write headlines for a carousel about Claude Connectors."},
+  {n:10,t:"/reframe",name:"Language Shift",cat:"voice",
+   desc:"Rewrites your message using completely different language while keeping the same meaning.",
+   ex:"/reframe Make this sound less salesy and more like a conversation: [paste text]"},
+
+  // ── STRATEGY (10) ──────────────────────────────────────────────────────
+  {n:11,t:"/xray",name:"Root Finder",cat:"strategy",
+   desc:"Claude looks past the surface question to find what is really going on — then addresses that.",
+   ex:"/xray My Instagram content isn't getting engagement. What should I do?"},
+  {n:12,t:"/arise",name:"RICE Scorer",cat:"strategy",
+   desc:"Scores every idea by Reach, Impact, Confidence, and Effort so you know exactly what to prioritize.",
+   ex:"/arise Score these 5 business ideas I have: [list ideas]"},
+  {n:13,t:"/cobra",name:"Blind Spot Breaker",cat:"strategy",
+   desc:"Forces Claude to attack your idea from a completely unexpected angle you would never have considered.",
+   ex:"/cobra Here's my plan to launch a paid AI community: [describe plan]"},
+  {n:14,t:"/adversary",name:"Devil's Advocate",cat:"strategy",
+   desc:"Claude argues the strongest possible case against your plan, idea, or decision.",
+   ex:"/adversary I'm planning to leave my 9-5 to run ZagaPrime full time next month."},
+  {n:15,t:"/premortem",name:"Failure Forecaster",cat:"strategy",
+   desc:"Imagine it's one year from now and your plan failed. Claude tells you exactly why — before you start.",
+   ex:"/premortem My plan is to grow to 10k Instagram followers in 90 days with AI content."},
+  {n:16,t:"/moat",name:"Defensibility Analyst",cat:"strategy",
+   desc:"Identifies what makes your business genuinely hard to copy and how to build on it.",
+   ex:"/moat Here's my business model: [describe it]. What is my actual competitive moat?"},
+  {n:17,t:"/secondorder",name:"Consequence Chain",cat:"strategy",
+   desc:"Maps the second and third-order effects of any decision before you make it.",
+   ex:"/secondorder If I reduce my service prices by 30% to get more clients, what really happens?"},
+  {n:18,t:"/bottleneck",name:"Constraint Hunter",cat:"strategy",
+   desc:"Finds the single constraint inside your business or plan that is limiting everything else.",
+   ex:"/bottleneck I'm generating leads but they're not converting. Here's my funnel: [describe]"},
+  {n:19,t:"/leverage",name:"Force Multiplier",cat:"strategy",
+   desc:"Identifies the one action, asset, or relationship with the highest leverage in your current situation.",
+   ex:"/leverage Here's where my business is right now: [describe]. What moves the most with the least?"},
+  {n:20,t:"/founder",name:"Founder Mode",cat:"strategy",
+   desc:"Responds with the directness, urgency, and first-principles thinking of a founder — no corporate thinking.",
+   ex:"/founder I need to make a decision about whether to hire a VA or automate instead."},
+
+  // ── CONTENT (10) ──────────────────────────────────────────────────────
+  {n:21,t:"/carousel",name:"Slide Builder",cat:"content",
+   desc:"Turns any idea into a 10-slide Instagram carousel with hook, body, and CTA structure.",
+   ex:"/carousel Create a carousel about why small businesses should use Claude Connectors."},
+  {n:22,t:"/thread",name:"Thread Architect",cat:"content",
+   desc:"Structures any topic as a high-retention Twitter/X thread with a hook tweet and flowing body.",
+   ex:"/thread Turn this idea into a thread: 5 ways Claude changed how I run my business."},
+  {n:23,t:"/repurpose",name:"Content Multiplier",cat:"content",
+   desc:"Takes one piece of content and turns it into 6 different formats for 6 different platforms.",
+   ex:"/repurpose Take this Instagram caption and create versions for LinkedIn, Twitter, TikTok, email, and blog."},
+  {n:24,t:"/series",name:"Content Planner",cat:"content",
+   desc:"Plans a 30-day content series around any theme with specific post ideas for each day.",
+   ex:"/series Plan 30 days of Instagram content for ZagaPrime AI Hub focused on Claude tools."},
+  {n:25,t:"/caption [platform]",name:"Caption Generator",cat:"content",
+   desc:"Writes a platform-optimized caption with hook, body, CTA, and hashtag set.",
+   ex:"/caption instagram Write the caption for a carousel about 5 secret Claude codes."},
+  {n:26,t:"/storify",name:"Story Converter",cat:"content",
+   desc:"Turns any fact, tip, or insight into a story with tension, lesson, and takeaway.",
+   ex:"/storify Turn this insight into a story: Most people waste AI by using it like Google."},
+  {n:27,t:"/listicle",name:"List Master",cat:"content",
+   desc:"Turns any topic into a high-value numbered list post with sharp, specific entries.",
+   ex:"/listicle 10 things you can automate with Claude Connectors this week."},
+  {n:28,t:"/cta",name:"CTA Crafter",cat:"content",
+   desc:"Generates 5 variations of a call-to-action for any goal — follow, comment, DM, click, buy.",
+   ex:"/cta Write 5 CTAs for a carousel where I want people to comment CODES."},
+  {n:29,t:"/email",name:"Email Writer",cat:"content",
+   desc:"Writes a full email in your brand voice — subject line, body, and clear CTA included.",
+   ex:"/email Write a welcome email for new ZagaPrime AI Hub newsletter subscribers."},
+  {n:30,t:"/script",name:"Video Scripter",cat:"content",
+   desc:"Writes a short-form video script with hook, points, and strong ending — optimized for retention.",
+   ex:"/script Write a 60-second Instagram Reel script about 5 secret Claude codes."},
+
+  // ── DEEP THINKING (10) ────────────────────────────────────────────────
+  {n:31,t:"/tripwire",name:"Risk Detector",cat:"thinking",
+   desc:"Identifies the one small overlooked detail in your plan that could blow everything up.",
+   ex:"/tripwire I'm about to launch a paid digital product for $97. Here's the plan: [describe]"},
+  {n:32,t:"/firstprinciples",name:"Foundation Mode",cat:"thinking",
+   desc:"Strips everything back to base assumptions and rebuilds from the ground up.",
+   ex:"/firstprinciples Why do most solopreneurs struggle to scale even with good products?"},
+  {n:33,t:"/steelman",name:"Best Case Builder",cat:"thinking",
+   desc:"Argues the strongest possible version of any idea — even ones you disagree with.",
+   ex:"/steelman Make the best possible argument that AI will replace most creative jobs."},
+  {n:34,t:"/contrarian",name:"Counter Intelligence",cat:"thinking",
+   desc:"Challenges the dominant narrative on any topic and finds where conventional wisdom is wrong.",
+   ex:"/contrarian What does everyone get wrong about growing on Instagram in 2025?"},
+  {n:35,t:"/mental model [name]",name:"Framework Lens",cat:"thinking",
+   desc:"Analyzes your situation through the lens of a specific mental model or framework.",
+   ex:"/mental model Pareto Principle Which 20% of my actions are generating 80% of my results?"},
+  {n:36,t:"/reductio",name:"Extreme Test",cat:"thinking",
+   desc:"Takes any idea to its logical extreme to test whether it holds up under pressure.",
+   ex:"/reductio If every business automated every possible task with AI, what happens to the economy?"},
+  {n:37,t:"/analogy",name:"Bridge Builder",cat:"thinking",
+   desc:"Explains complex ideas using a surprisingly simple analogy that makes it instantly click.",
+   ex:"/analogy Explain MCP connectors using an analogy anyone can understand."},
+  {n:38,t:"/assumptions",name:"Belief Audit",cat:"thinking",
+   desc:"Lists every hidden assumption inside your plan or question that you haven't examined yet.",
+   ex:"/assumptions What assumptions am I making in this business plan: [describe plan]"},
+  {n:39,t:"/zoomed",name:"Altitude Shift",cat:"thinking",
+   desc:"Zooms way out to the 10-year view and back to right now — shifts perspective completely.",
+   ex:"/zoomed What does ZagaPrime AI Hub look like in 10 years if I stay on this path?"},
+  {n:40,t:"/philosopher",name:"Deep Why",cat:"thinking",
+   desc:"Asks the fundamental 'why' questions behind your decision until you hit the real motivation.",
+   ex:"/philosopher Why am I actually building ZagaPrime AI Hub? Help me get to the real answer."},
+
+  // ── BUSINESS (10) ─────────────────────────────────────────────────────
+  {n:41,t:"/offer",name:"Offer Builder",cat:"business",
+   desc:"Structures an irresistible offer around any service, product, or idea you describe.",
+   ex:"/offer Build a compelling offer around AI automation consulting for small NJ businesses."},
+  {n:42,t:"/pitch",name:"Pitch Distiller",cat:"business",
+   desc:"Condenses any business idea into a clear, compelling 3-sentence pitch anyone understands.",
+   ex:"/pitch Write a 3-sentence pitch for ZagaPrime AI Hub."},
+  {n:43,t:"/icp",name:"Customer Profiler",cat:"business",
+   desc:"Builds a detailed ideal customer profile including psychographics, pain points, and trigger moments.",
+   ex:"/icp Define the ICP for a Claude Connectors course for small business owners."},
+  {n:44,t:"/pricing",name:"Price Strategist",cat:"business",
+   desc:"Analyzes your pricing structure and recommends adjustments with reasoning.",
+   ex:"/pricing I charge $97/month for AI automation consulting. Is this right for my market?"},
+  {n:45,t:"/revenue",name:"Revenue Architect",cat:"business",
+   desc:"Maps all possible revenue streams from your current skills, audience, and assets.",
+   ex:"/revenue I run an AI education brand on Instagram with 5k followers. What can I monetize?"},
+  {n:46,t:"/launch",name:"Launch Planner",cat:"business",
+   desc:"Creates a step-by-step pre-launch, launch, and post-launch sequence for any offer.",
+   ex:"/launch Plan the launch of a $47 digital guide on Claude Connectors for entrepreneurs."},
+  {n:47,t:"/sop",name:"Process Builder",cat:"business",
+   desc:"Turns any workflow you describe into a clean, reusable Standard Operating Procedure.",
+   ex:"/sop Write an SOP for how I onboard a new client at ZagaPrime."},
+  {n:48,t:"/scale",name:"Scale Map",cat:"business",
+   desc:"Identifies exactly what needs to change to 10x your current output without 10x work.",
+   ex:"/scale I'm creating 5 pieces of content per week manually. How do I scale to 50?"},
+  {n:49,t:"/niche",name:"Niche Sharpener",cat:"business",
+   desc:"Helps you get more specific about your niche to attract better clients and charge more.",
+   ex:"/niche I help businesses use AI. How do I niche down without losing opportunities?"},
+  {n:50,t:"/competitor",name:"Competitor Intel",cat:"business",
+   desc:"Analyzes competitors in your space and identifies what gaps you can own.",
+   ex:"/competitor Who are the main competitors to ZagaPrime AI Hub and where are their gaps?"},
+
+  // ── CREATIVITY (10) ───────────────────────────────────────────────────
+  {n:51,t:"/wildcard",name:"Random Unlock",cat:"creativity",
+   desc:"Claude ignores all conventional approaches and generates the most unexpected possible idea.",
+   ex:"/wildcard Give me an unexpected content series idea for an AI education brand."},
+  {n:52,t:"/mashup [A] + [B]",name:"Concept Collider",cat:"creativity",
+   desc:"Smashes two unrelated ideas together to produce something entirely new.",
+   ex:"/mashup chess + AI content strategy What does a chess-inspired content framework look like?"},
+  {n:53,t:"/invert",name:"Upside Down Mode",cat:"creativity",
+   desc:"Solves a problem by figuring out how to make it worse — then doing the opposite.",
+   ex:"/invert What would I do if I wanted to guarantee nobody watches my Instagram Reels?"},
+  {n:54,t:"/metaphor",name:"Metaphor Maker",cat:"creativity",
+   desc:"Generates a powerful metaphor for any concept that makes it unforgettable.",
+   ex:"/metaphor Create a metaphor that explains Claude Connectors to a non-technical business owner."},
+  {n:55,t:"/constraint",name:"Creativity Box",cat:"creativity",
+   desc:"Solves your challenge with a deliberately restrictive constraint that forces original thinking.",
+   ex:"/constraint Solve this with only free tools and no developer: [describe problem]"},
+  {n:56,t:"/genre [type]",name:"Format Shift",cat:"creativity",
+   desc:"Delivers any idea in a completely different genre — speech, poem, manifesto, movie trailer.",
+   ex:"/genre manifesto Write a manifesto for ZagaPrime AI Hub."},
+  {n:57,t:"/rename",name:"Name Generator",cat:"creativity",
+   desc:"Generates 10 name options for any product, service, brand, or concept.",
+   ex:"/rename Generate 10 name ideas for a digital product about 100 Claude prompt codes."},
+  {n:58,t:"/world",name:"World Builder",cat:"creativity",
+   desc:"Describes what a world looks like where your idea has fully succeeded — in vivid detail.",
+   ex:"/world What does the world look like in 5 years if every small business runs on AI?"},
+  {n:59,t:"/emotion [feeling]",name:"Emotional Anchor",cat:"creativity",
+   desc:"Rewrites any message to create a specific emotional response in the reader.",
+   ex:"/emotion urgency Rewrite this caption to create FOMO: [paste caption]"},
+  {n:60,t:"/poster",name:"Visual Brief",cat:"creativity",
+   desc:"Describes the ideal visual design for any concept — layout, colors, imagery, and feel.",
+   ex:"/poster Describe the visual direction for a ZagaPrime AI education Instagram carousel."},
+
+  // ── ANALYSIS (10) ─────────────────────────────────────────────────────
+  {n:61,t:"/audit",name:"Full Audit",cat:"analysis",
+   desc:"Reviews any piece of work — copy, strategy, code, plan — and gives a detailed honest assessment.",
+   ex:"/audit Audit my Instagram bio and tell me exactly what's wrong with it: [paste bio]"},
+  {n:62,t:"/benchmark",name:"Standard Setter",cat:"analysis",
+   desc:"Compares your approach to industry best practice and identifies the gaps.",
+   ex:"/benchmark How does my content strategy compare to what top AI educators are doing?"},
+  {n:63,t:"/data",name:"Data Interpreter",cat:"analysis",
+   desc:"Analyzes numbers, metrics, or stats and tells you what they actually mean in plain language.",
+   ex:"/data My Instagram insights: 3.2% engagement, 400 reach per post, 80 profile visits. What does this mean?"},
+  {n:64,t:"/diagnose",name:"Problem Doctor",cat:"analysis",
+   desc:"Diagnoses exactly why something isn't working based on what you describe.",
+   ex:"/diagnose My email open rate dropped from 42% to 18% last month. Here's what changed: [describe]"},
+  {n:65,t:"/score [criteria]",name:"Custom Scorer",cat:"analysis",
+   desc:"Scores any idea, plan, or piece of work against criteria you define.",
+   ex:"/score clarity, value, hook strength Score this carousel concept out of 10: [describe]"},
+  {n:66,t:"/trend",name:"Trend Spotter",cat:"analysis",
+   desc:"Identifies emerging patterns and trends in any space based on what you describe.",
+   ex:"/trend What trends in AI content creation should ZagaPrime be riding right now?"},
+  {n:67,t:"/why [3x]",name:"Root Cause Driller",cat:"analysis",
+   desc:"Asks 'why' three levels deep until it reaches the actual root cause of your problem.",
+   ex:"/why 3x My Instagram follower growth has plateaued. Why is this really happening?"},
+  {n:68,t:"/compare",name:"Side by Side",cat:"analysis",
+   desc:"Creates a clear, honest comparison between two options, tools, approaches, or ideas.",
+   ex:"/compare n8n vs Zapier for a small business owner with no coding experience."},
+  {n:69,t:"/forecast",name:"Future Reader",cat:"analysis",
+   desc:"Projects likely future states based on current conditions and trends you describe.",
+   ex:"/forecast Given current AI adoption rates, what does the typical solopreneur look like in 2027?"},
+  {n:70,t:"/pattern",name:"Pattern Finder",cat:"analysis",
+   desc:"Identifies repeating patterns in data, behavior, or situations you describe.",
+   ex:"/pattern Here are my last 10 posts and their engagement: [list]. What pattern do you see?"},
+
+  // ── PEOPLE & COMMS (10) ───────────────────────────────────────────────
+  {n:71,t:"/reply",name:"Response Crafter",cat:"people",
+   desc:"Drafts a clear, professional, on-brand reply to any message, email, or comment.",
+   ex:"/reply Write a reply to this DM asking about my AI services: [paste DM]"},
+  {n:72,t:"/negotiate",name:"Deal Framer",cat:"people",
+   desc:"Structures your negotiation position with clear framing, anchors, and fallback positions.",
+   ex:"/negotiate I want to raise my consulting rate from $150 to $250/hour with a long-term client."},
+  {n:73,t:"/deescalate",name:"Tension Diffuser",cat:"people",
+   desc:"Rewrites a heated or difficult message to resolve tension without losing your position.",
+   ex:"/deescalate Rewrite this email response so it doesn't sound defensive: [paste email]"},
+  {n:74,t:"/persuade",name:"Influence Architect",cat:"people",
+   desc:"Restructures any message using proven persuasion principles — reciprocity, social proof, scarcity.",
+   ex:"/persuade Rewrite this offer description to be more persuasive without being pushy: [paste copy]"},
+  {n:75,t:"/explain [level]",name:"Clarity Translator",cat:"people",
+   desc:"Explains any complex topic at the exact level you specify — beginner, expert, child, executive.",
+   ex:"/explain beginner What is MCP and why does it matter for small businesses?"},
+  {n:76,t:"/feedback",name:"Feedback Framer",cat:"people",
+   desc:"Structures difficult feedback in a way that is honest, clear, and constructive — not harsh.",
+   ex:"/feedback I need to tell my VA their work quality has dropped. Help me frame this well."},
+  {n:77,t:"/empathy",name:"Perspective Taker",cat:"people",
+   desc:"Describes your situation from the other person's point of view so you understand their position.",
+   ex:"/empathy Put yourself in the shoes of a skeptical SMB owner hearing about Claude Connectors for the first time."},
+  {n:78,t:"/boundary",name:"Limit Setter",cat:"people",
+   desc:"Writes a clear, firm, professional message that sets or reinforces a boundary.",
+   ex:"/boundary Write a message to a client who keeps contacting me outside business hours."},
+  {n:79,t:"/followup",name:"Follow-Up Writer",cat:"people",
+   desc:"Writes a follow-up message that is persistent without being annoying.",
+   ex:"/followup Write a second follow-up to a prospect who went cold after a proposal call."},
+  {n:80,t:"/introduce",name:"Intro Crafter",cat:"people",
+   desc:"Writes a compelling self-introduction tailored to a specific context or audience.",
+   ex:"/introduce Write how I'd introduce ZagaPrime AI Hub at a business networking event."},
+
+  // ── CLARITY (10) ──────────────────────────────────────────────────────
+  {n:81,t:"/simplify",name:"Complexity Killer",cat:"clarity",
+   desc:"Takes any complicated explanation and reduces it to the simplest possible language.",
+   ex:"/simplify Explain what an API is to someone who has never heard the word."},
+  {n:82,t:"/tldr",name:"Summary Engine",cat:"clarity",
+   desc:"Reduces any long content to its core point in 3 sentences or fewer.",
+   ex:"/tldr Summarize this 1000-word blog post into 3 sentences: [paste content]"},
+  {n:83,t:"/eli5",name:"Child Mode",cat:"clarity",
+   desc:"Explains anything as if the reader is 10 years old — no jargon, no complexity.",
+   ex:"/eli5 Explain how Claude Connectors work to a complete beginner."},
+  {n:84,t:"/glossary",name:"Term Definer",cat:"clarity",
+   desc:"Creates a plain-language glossary for any industry, topic, or document.",
+   ex:"/glossary Create a glossary of AI automation terms for a non-technical small business owner."},
+  {n:85,t:"/outline",name:"Structure Builder",cat:"clarity",
+   desc:"Turns any messy idea or topic into a clear, logical, numbered outline.",
+   ex:"/outline Create a clear outline for a course on Claude Connectors for entrepreneurs."},
+  {n:86,t:"/structure [format]",name:"Format Fixer",cat:"clarity",
+   desc:"Reorganizes your content into a specific structure — problem/solution, before/after, etc.",
+   ex:"/structure problem-solution Restructure this blog post: [paste post]"},
+  {n:87,t:"/jargon-free",name:"Plain Speaker",cat:"clarity",
+   desc:"Rewrites any text removing all industry jargon and replacing it with plain language.",
+   ex:"/jargon-free Rewrite this technical description of MCP in plain English: [paste text]"},
+  {n:88,t:"/checklist",name:"Action List Creator",cat:"clarity",
+   desc:"Turns any process, guide, or idea into a ready-to-use actionable checklist.",
+   ex:"/checklist Turn this 7-step connector setup process into a one-page checklist."},
+  {n:89,t:"/visualize",name:"Mental Picture Maker",cat:"clarity",
+   desc:"Describes any concept in a way that creates a clear mental image for the reader.",
+   ex:"/visualize Describe the ZagaPrime content system in a way someone can picture it."},
+  {n:90,t:"/one-sentence",name:"Distiller",cat:"clarity",
+   desc:"Reduces any idea, plan, or concept to its single most essential sentence.",
+   ex:"/one-sentence What is ZagaPrime AI Hub in one sentence?"},
+
+  // ── ACTION (10) ───────────────────────────────────────────────────────
+  {n:91,t:"/next",name:"Next Step Generator",cat:"action",
+   desc:"Identifies the single most important next action to take right now based on your situation.",
+   ex:"/next Here's where I am with ZagaPrime: [describe]. What is my single best next step?"},
+  {n:92,t:"/sprint",name:"Sprint Planner",cat:"action",
+   desc:"Creates a focused 7-day or 30-day execution plan for any goal.",
+   ex:"/sprint Build me a 30-day sprint plan to grow ZagaPrime Instagram to 1,000 followers."},
+  {n:93,t:"/blocker",name:"Obstacle Remover",cat:"action",
+   desc:"Identifies what is actually blocking you from moving forward and how to remove it.",
+   ex:"/blocker I've been planning to launch my AI course for 3 months and haven't started. Why?"},
+  {n:94,t:"/automate",name:"Automation Finder",cat:"action",
+   desc:"Identifies exactly which parts of what you described can be automated — and with what tools.",
+   ex:"/automate Here's my weekly content workflow: [describe]. What can Claude automate?"},
+  {n:95,t:"/delegate",name:"Delegation Planner",cat:"action",
+   desc:"Identifies what in your workload should be delegated, automated, or eliminated entirely.",
+   ex:"/delegate Here's everything I do in a typical week: [list]. What should I stop doing myself?"},
+  {n:96,t:"/deadline",name:"Commitment Setter",cat:"action",
+   desc:"Turns vague plans into specific commitments with dates and defined outputs.",
+   ex:"/deadline I want to launch my digital product. Turn this plan into specific deadlines."},
+  {n:97,t:"/momentum",name:"Starter Engine",cat:"action",
+   desc:"Breaks down a paralysing task into a first step so small it's impossible not to take.",
+   ex:"/momentum I keep putting off creating my lead magnet. What is the tiniest first step?"},
+  {n:98,t:"/prioritize",name:"Focus Filter",cat:"action",
+   desc:"Takes a long to-do list and tells you exactly what to do first, second, and what to drop.",
+   ex:"/prioritize Here are my 12 tasks for this week: [list]. Put them in the right order."},
+  {n:99,t:"/daily",name:"Daily Architect",cat:"action",
+   desc:"Designs an optimal daily schedule for any goal, role, or lifestyle you describe.",
+   ex:"/daily Design my ideal daily schedule as a solopreneur building ZagaPrime AI Hub."},
+  {n:100,t:"/system",name:"System Designer",cat:"action",
+   desc:"Turns any repeated process into a documented, repeatable system you can run or hand off.",
+   ex:"/system Build a system for how I create, schedule, and post Instagram carousels every week."},
+];
+
+let activeCategory = 'all';
+let searchQuery = '';
+
+function renderCodes() {
+  const grid = document.getElementById('codesGrid');
+  const empty = document.getElementById('emptyMsg');
+  grid.innerHTML = '';
+  
+  const filtered = CODES.filter(c => {
+    const matchCat  = activeCategory === 'all' || c.cat === activeCategory;
+    const q = searchQuery.toLowerCase();
+    const matchSearch = !q ||
+      c.t.toLowerCase().includes(q) ||
+      c.name.toLowerCase().includes(q) ||
+      c.desc.toLowerCase().includes(q) ||
+      c.ex.toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+
+  if (filtered.length === 0) {
+    empty.style.display = 'grid';
+    grid.style.display = 'none';
+    return;
+  }
+  empty.style.display = 'none';
+  grid.style.display = 'grid';
+
+  filtered.forEach(c => {
+    const el = document.createElement('div');
+    el.className = 'code-card visible';
+    el.innerHTML = `
+      <div class="card-top">
+        <span class="code-trigger">${c.t}</span>
+        <span class="code-num">#${String(c.n).padStart(3,'0')}</span>
+      </div>
+      <div class="card-body">
+        <div class="code-name">${c.name}</div>
+        <div class="code-desc">${c.desc}</div>
+        <div class="code-example">${c.ex}</div>
+        <span class="cat-tag">${c.cat}</span>
+        <button class="copy-mini" onclick="copyCode('${c.t.replace(/'/g,"\\'")}', this)">⎘ Copy</button>
+      </div>`;
+    grid.appendChild(el);
+  });
+}
+
+function setCategory(cat, btn) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCodes();
+}
+
+function filterCodes() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderCodes();
+}
+
+function copyCode(trigger, btn) {
+  navigator.clipboard.writeText(trigger).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copied';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 1800);
+  });
+}
+
+renderCodes();
+</script>
+</body>
+</html>

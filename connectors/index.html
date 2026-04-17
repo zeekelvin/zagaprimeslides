@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZagaPrime — Carousel Captions & Hashtags</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:       #FAF7F2;
+    --bg2:      #F3EDE3;
+    --ink:      #18100A;
+    --terra:    #C46945;
+    --terra-d:  #9B4B2A;
+    --terra-l:  #E8A87C;
+    --gold:     #D48C14;
+    --muted:    #8A7D72;
+    --line:     #E0D8CE;
+    --pill-bg:  #F0E8DC;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--ink);
+    padding: 18px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.3px;
+    color: #fff;
+  }
+  .topbar-brand span { color: var(--terra-l); }
+  .topbar-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--terra-l);
+    border: 1px solid var(--terra-d);
+    padding: 5px 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--ink);
+    padding: 60px 48px 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 360px; height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,105,69,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--terra-l);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(30px, 4vw, 50px);
+    line-height: 1.1;
+    color: #fff;
+    max-width: 700px;
+    margin-bottom: 14px;
+  }
+  .hero h1 em { font-style: normal; color: var(--terra-l); }
+  .hero p {
+    color: rgba(255,255,255,0.5);
+    font-size: 15px;
+    font-weight: 300;
+    max-width: 560px;
+    line-height: 1.7;
+  }
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 40px;
+    padding-top: 36px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 32px;
+    color: var(--terra-l); line-height: 1;
+  }
+  .stat-lbl {
+    font-size: 11px; color: rgba(255,255,255,0.35);
+    text-transform: uppercase; letter-spacing: 1px;
+    font-family: 'DM Mono', monospace;
+    margin-top: 5px;
+  }
+
+  /* ── NAV TABS ── */
+  .nav-wrap {
+    padding: 28px 48px 0;
+    display: flex; gap: 10px; flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg2);
+  }
+  .nav-tab {
+    padding: 12px 22px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    transition: all .2s;
+    background: none; border-left:none; border-right:none; border-top:none;
+    outline: none;
+    margin-bottom: -1px;
+  }
+  .nav-tab:hover { color: var(--terra); }
+  .nav-tab.active { color: var(--terra); border-bottom-color: var(--terra); }
+
+  /* ── MAIN GRID ── */
+  .main { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+
+  .carousel-section { display: none; padding-top: 52px; }
+  .carousel-section.active { display: block; }
+
+  /* ── CAROUSEL HEADER ── */
+  .c-header {
+    display: flex; align-items: flex-start;
+    gap: 28px; margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--line);
+  }
+  .c-number {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 72px;
+    color: var(--line); line-height: 1;
+    flex-shrink: 0; letter-spacing: -2px;
+    margin-top: -8px;
+  }
+  .c-meta { flex: 1; }
+  .c-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; letter-spacing: 2px;
+    color: var(--terra); text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .c-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 26px;
+    line-height: 1.2; margin-bottom: 10px;
+  }
+  .c-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* ── CONTENT BLOCKS ── */
+  .blocks { display: flex; flex-direction: column; gap: 32px; }
+
+  .block {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .block-header {
+    background: var(--ink);
+    padding: 14px 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .block-icon {
+    width: 32px; height: 32px;
+    background: var(--terra);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+    font-weight: 700; color: #fff;
+    font-family: 'DM Mono', monospace;
+  }
+  .block-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 14px;
+    color: #fff; letter-spacing: 0.3px;
+  }
+  .block-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px; color: var(--terra-l);
+    letter-spacing: 1.5px; text-transform: uppercase;
+    margin-left: auto;
+  }
+
+  .block-body { padding: 28px; }
+
+  /* Caption block */
+  .caption-text {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--ink);
+    white-space: pre-wrap;
+    font-weight: 400;
+  }
+  .caption-text strong { font-weight: 600; color: var(--terra-d); }
+
+  /* Hashtags */
+  .tags-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .tag {
+    background: var(--pill-bg);
+    border: 1px solid var(--line);
+    color: var(--terra-d);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .tag:hover { background: var(--terra); color: #fff; border-color: var(--terra); }
+
+  /* CTA word pill */
+  .cta-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--ink); color: var(--terra-l);
+    font-family: 'DM Mono', monospace; font-size: 13px;
+    font-weight: 500; letter-spacing: 1.5px;
+    padding: 10px 20px; border-radius: 4px;
+    text-transform: uppercase;
+  }
+  .cta-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--terra); }
+
+  /* Copy button */
+  .copy-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 10px 22px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all .2s;
+    border-radius: 2px;
+  }
+  .copy-btn:hover { background: var(--terra); color: #fff; border-color: var(--terra); }
+  .copy-btn.copied { background: #22c55e; color: #fff; border-color: #22c55e; }
+
+  .block-footer {
+    padding: 16px 28px;
+    border-top: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg2);
+  }
+
+  /* Divider */
+  .divider { height: 1px; background: var(--line); margin: 8px 0 0; }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .topbar, .nav-wrap, .main { padding-left: 20px; padding-right: 20px; }
+    .hero { padding: 40px 20px; }
+    .c-header { flex-direction: column; gap: 12px; }
+    .c-number { font-size: 48px; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-brand">ZAGA<span>PRIME</span> AI HUB</div>
+  <div class="topbar-badge">Caption Kit</div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Instagram Content System</div>
+  <h1>6 Carousel Captions.<br><em>Ready to Copy & Post.</em></h1>
+  <p>Full captions, descriptions, and hashtag sets for every connector carousel — written in the ZagaPrime brand voice. Copy each one directly into Instagram.</p>
+  <div class="hero-stats">
+    <div><div class="stat-num">6</div><div class="stat-lbl">Carousels</div></div>
+    <div><div class="stat-num">6</div><div class="stat-lbl">Full Captions</div></div>
+    <div><div class="stat-num">6</div><div class="stat-lbl">Tag Sets</div></div>
+    <div><div class="stat-num">6</div><div class="stat-lbl">CTA Words</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <button class="nav-tab active" onclick="show(0)">C01 · What Are Connectors</button>
+  <button class="nav-tab" onclick="show(1)">C02 · How To Install</button>
+  <button class="nav-tab" onclick="show(2)">C03 · Top 10 Connectors</button>
+  <button class="nav-tab" onclick="show(3)">C04 · Plugins vs Skills</button>
+  <button class="nav-tab" onclick="show(4)">C05 · Permissions & Safety</button>
+  <button class="nav-tab" onclick="show(5)">C06 · Custom MCP</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════════════════════════════ C01 ══ -->
+<div class="carousel-section active" id="s0">
+  <div class="c-header">
+    <div class="c-number">01</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 01 · Education</div>
+      <div class="c-title">What Are Claude Connectors?</div>
+      <div class="c-desc">Awareness-level post. Introduces the feature to people who have never heard of connectors. Goal: stop the scroll, create curiosity, drive comment.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+
+    <!-- Caption -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap0">Most people use Claude like a search engine.
+
+Ask a question. Read the answer. Copy it somewhere. Go do the task manually.
+
+That's not leverage. That's just a smarter Google.
+
+Claude Connectors change the whole game. 🔌
+
+Instead of talking TO Claude about your tools — Claude now works INSIDE your tools.
+
+✅ It reads your Gmail without you touching it
+✅ It creates Notion pages without you switching tabs
+✅ It sends Slack messages without you leaving the chat
+✅ It updates your HubSpot deals directly from conversation
+
+No copy-paste. No switching windows. No friction.
+
+One conversation. Multiple tools. Real work done.
+
+This is what it looks like when AI actually integrates with your business — not just assists it.
+
+Swipe to see how it works, what's available, and how to get started in 60 seconds. 👉
+
+💬 Drop <strong>"CONNECT"</strong> in the comments and I'll send you the free Connectors Quick-Start Checklist.
+
+—
+📍 ZagaPrime AI Hub — We don't just talk about AI. We connect you to it.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: CONNECT</div>
+        <button class="copy-btn" onclick="copyText('cap0', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <!-- Tags -->
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Mixed Reach</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags0">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#AITools</span>
+          <span class="tag">#AIAutomation</span>
+          <span class="tag">#ArtificialIntelligence</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#AIForBusiness</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#NoCode</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#DigitalTransformation</span>
+          <span class="tag">#EntrepreneurAI</span>
+          <span class="tag">#SolopreneurTools</span>
+          <span class="tag">#ProductivityHacks</span>
+          <span class="tag">#AIForEntrepreneurs</span>
+          <span class="tag">#SmallBizTech</span>
+          <span class="tag">#AIStack</span>
+          <span class="tag">#MCPProtocol</span>
+          <span class="tag">#FutureOfWork</span>
+          <span class="tag">#AICoworker</span>
+          <span class="tag">#BusinessTools</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AIEducation</span>
+          <span class="tag">#TechForBusiness</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#LearnAI</span>
+          <span class="tag">#AIStrategy</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · broad + niche mix</span>
+        <button class="copy-btn" onclick="copyTags('tags0', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ C02 ══ -->
+<div class="carousel-section" id="s1">
+  <div class="c-header">
+    <div class="c-number">02</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 02 · Tutorial</div>
+      <div class="c-title">How To Install Your First Claude Connector</div>
+      <div class="c-desc">Step-by-step how-to post. High save rate content. Targets people who are aware but haven't started. Goal: saves, shares, and SETUP comments.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap1">You've heard about Claude Connectors. Now here's exactly how to set one up — in under 60 seconds. 🔧
+
+No dev experience. No API keys. No tutorials to watch.
+
+Just 7 steps and you're connected. 👇
+
+Step 1 → Open Claude, click the '+' button
+Step 2 → Browse the Connectors Directory
+Step 3 → Pick a tool you use every day
+Step 4 → Click Connect → complete the OAuth login
+Step 5 → Set your Tool Permissions (read vs write)
+Step 6 → Toggle the connector on in your chat
+Step 7 → Ask Claude to do something inside that tool
+
+That's it. Claude is now working INSIDE your app.
+
+The first time it works — when Claude actually pulls your real Notion doc or sends your actual Slack message — you'll feel the shift immediately.
+
+Start with one of these:
+📧 Gmail (summarize, draft, send)
+📁 Google Drive (search, pull context)
+💬 Slack (read threads, send messages)
+📓 Notion (create pages, search docs)
+
+Swipe through for the full step-by-step walkthrough with every detail. 👉
+
+💬 Comment <strong>"SETUP"</strong> and I'll send you the Connector Setup Guide — every step, every screenshot, zero confusion.
+
+—
+📍 ZagaPrime AI Hub — Connecting SMBs to the AI tools that actually work.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: SETUP</div>
+        <button class="copy-btn" onclick="copyText('cap1', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Tutorial Focus</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags1">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#HowToAI</span>
+          <span class="tag">#AITutorial</span>
+          <span class="tag">#AISetup</span>
+          <span class="tag">#LearnAI</span>
+          <span class="tag">#AIForBeginners</span>
+          <span class="tag">#NoCode</span>
+          <span class="tag">#NoCodeTools</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#ProductivityTools</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#AIForEntrepreneurs</span>
+          <span class="tag">#TechTips</span>
+          <span class="tag">#AIWalkthrough</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#SolopreneurTools</span>
+          <span class="tag">#EntrepreneurTips</span>
+          <span class="tag">#SaveThis</span>
+          <span class="tag">#AITools2025</span>
+          <span class="tag">#NotionAI</span>
+          <span class="tag">#SlackIntegration</span>
+          <span class="tag">#GmailAutomation</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#MCPProtocol</span>
+          <span class="tag">#AIStack</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · tutorial + tool specific</span>
+        <button class="copy-btn" onclick="copyTags('tags1', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ C03 ══ -->
+<div class="carousel-section" id="s2">
+  <div class="c-header">
+    <div class="c-number">03</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 03 · Value List</div>
+      <div class="c-title">The Top 10 Claude Connectors to Install First</div>
+      <div class="c-desc">High-save, high-share listicle. Targets people who want the shortcut. Goal: saves, profile visits, and TOOLS comments from people ready to build their stack.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap2">There are 50+ Claude Connectors in the directory.
+
+Most people connect 1, forget about it, and wonder why nothing changed.
+
+The entrepreneurs building real AI-powered businesses? They're stacking 5-8 that cover their entire workflow. 📦
+
+Here are the 10 you should install first — and exactly what Claude can do with each one:
+
+📧 Gmail → summarize inbox, draft replies, find urgent emails
+📁 Google Drive → search files, pull doc context into chat
+💬 Slack → read threads, draft & send messages from Claude
+📓 Notion → create pages, search docs, build dashboards
+📊 HubSpot → update CRM records, pull deal data, log tasks
+✅ Asana → create tasks, manage projects from conversation
+🎨 Canva → generate designs, render live inside Claude
+📋 Linear → create issues, manage sprints from chat
+⚙️ n8n → trigger & monitor automations via Claude
+⚡ Zapier → fire multi-tool automations on command
+
+Stack Gmail + Drive + Notion + Slack and you've just put your entire communication and knowledge layer inside Claude.
+
+Add HubSpot + Asana and your sales and project ops run from the same window.
+
+Add n8n or Zapier and Claude becomes your automation operator.
+
+Swipe to see the full breakdown of each connector 👉
+
+💬 Comment <strong>"TOOLS"</strong> and I'll send you the ZagaPrime Top 10 Connector Stack guide — which to install, in what order, and what to prompt Claude with for each.
+
+—
+📍 ZagaPrime AI Hub — Your business, connected.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: TOOLS</div>
+        <button class="copy-btn" onclick="copyText('cap2', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Tool Stack Focus</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags2">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#AITools</span>
+          <span class="tag">#AIStack</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#TopAITools</span>
+          <span class="tag">#NotionAI</span>
+          <span class="tag">#GmailAutomation</span>
+          <span class="tag">#SlackAutomation</span>
+          <span class="tag">#HubSpotCRM</span>
+          <span class="tag">#AsanaApp</span>
+          <span class="tag">#CanvaDesign</span>
+          <span class="tag">#n8n</span>
+          <span class="tag">#ZapierAutomation</span>
+          <span class="tag">#GoogleDrive</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#NoCode</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#AIForBusiness</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#EntrepreneurTools</span>
+          <span class="tag">#SolopreneurLife</span>
+          <span class="tag">#ProductivityHacks</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#SaveThis</span>
+          <span class="tag">#AIForEntrepreneurs</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#MCPProtocol</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · stack + tool specific</span>
+        <button class="copy-btn" onclick="copyTags('tags2', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ C04 ══ -->
+<div class="carousel-section" id="s3">
+  <div class="c-header">
+    <div class="c-number">04</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 04 · Clarity</div>
+      <div class="c-title">Plugins vs Connectors vs Skills — The Difference</div>
+      <div class="c-desc">Clarification post that eliminates confusion. High share rate because people tag others who are confused. Goal: saves, shares, profile visits, LEARN comments.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap3">Claude has Connectors. And Skills. And Plugins.
+
+Most people have no idea what any of these are — or which one they actually need. 🤷
+
+Here's the clear breakdown in 60 seconds:
+
+🔌 <strong>CONNECTORS</strong>
+= Claude gets access to your real tools and data
+Think: a secure bridge to Gmail, Slack, Notion, HubSpot
+→ Use this when you need Claude to work INSIDE a specific app
+
+🧠 <strong>SKILLS</strong>
+= Reusable instructions that change HOW Claude performs a task
+Think: a saved prompt template that lives in Claude permanently
+→ Use this when you want Claude to do a task a specific way, every time
+
+📦 <strong>PLUGINS</strong>
+= A full pre-built setup that bundles Connectors + Skills + Agents together
+Think: one-click workflow configuration for a specific use case
+→ Use this when you want to set up an entire workflow fast
+
+The quick rule:
+→ Need access to a tool? → Install a Connector
+→ Need Claude to work better? → Install a Skill
+→ Setting up a full workflow? → Install a Plugin
+
+For most entrepreneurs starting out:
+Start with 3 Connectors + 2 Skills.
+Add a Plugin once you know your main workflow pattern.
+
+Find all three in one place → Customize > Browse Directory in your Claude sidebar.
+
+Swipe for the full breakdown 👉
+
+💬 Comment <strong>"LEARN"</strong> and I'll send you the ZagaPrime Extension Framework guide — when to use each one and how to stack them into a workflow that runs itself.
+
+—
+📍 ZagaPrime AI Hub — Clarity is the beginning of automation.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: LEARN</div>
+        <button class="copy-btn" onclick="copyText('cap3', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Education Focus</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags3">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#ClaudeSkills</span>
+          <span class="tag">#ClaudePlugins</span>
+          <span class="tag">#AIEducation</span>
+          <span class="tag">#LearnAI</span>
+          <span class="tag">#AIExplained</span>
+          <span class="tag">#AIForBeginners</span>
+          <span class="tag">#AITools</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#AIAutomation</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#NoCode</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#AIForEntrepreneurs</span>
+          <span class="tag">#AIStack</span>
+          <span class="tag">#EntrepreneurTips</span>
+          <span class="tag">#ProductivityTools</span>
+          <span class="tag">#TechForBusiness</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#MCPProtocol</span>
+          <span class="tag">#FutureOfWork</span>
+          <span class="tag">#AICoworker</span>
+          <span class="tag">#SaveThis</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AIStrategy</span>
+          <span class="tag">#SolopreneurTools</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · education + clarity focus</span>
+        <button class="copy-btn" onclick="copyTags('tags3', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ C05 ══ -->
+<div class="carousel-section" id="s4">
+  <div class="c-header">
+    <div class="c-number">05</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 05 · Trust Building</div>
+      <div class="c-title">Permissions & Safety Before You Connect</div>
+      <div class="c-desc">Trust and authority post. Addresses the #1 fear holding people back. Positions ZagaPrime as the responsible guide. Goal: trust, saves, profile visits, SAFE comments.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap4">Before you connect Claude to your Gmail, Slack, or CRM — read this. 🔐
+
+Claude Connectors are powerful. Some can read your data. Some can create, send, and delete inside your real accounts.
+
+That's the whole point. And it's exactly why you need to understand permissions before you click authorize.
+
+Here's what most people get wrong:
+
+❌ They connect everything at once
+❌ They set everything to "Always allow"
+❌ They never review what they've authorized
+
+Here's what you should do instead:
+
+✅ Start with 2-3 tools you use daily — not all 50+
+✅ Read the "read tools vs write tools" section before connecting
+✅ Set sensitive actions (send, delete, update) to "Needs Approval"
+✅ Start read-only on any tool that holds client or financial data
+✅ Review your active connectors every month
+✅ Disconnect anything you're no longer using
+
+Important for Teams & Enterprise:
+Only Owners can enable connectors org-wide.
+Go to Organization Settings → Connectors to manage access.
+Users inherit their existing permissions — Claude never gets more access than you already have.
+
+The goal isn't to connect Claude to everything.
+The goal is to connect Claude to the right things — with the right permissions.
+
+Control is the feature. Use it.
+
+Swipe for the full permissions breakdown 👉
+
+💬 Comment <strong>"SAFE"</strong> and I'll send you the ZagaPrime Permissions Checklist — the exact settings we recommend for every connector to keep your data protected.
+
+—
+📍 ZagaPrime AI Hub — Powerful AI. Responsible setup.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: SAFE</div>
+        <button class="copy-btn" onclick="copyText('cap4', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Trust + Safety Focus</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags4">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#AISafety</span>
+          <span class="tag">#AIPermissions</span>
+          <span class="tag">#ResponsibleAI</span>
+          <span class="tag">#AIPrivacy</span>
+          <span class="tag">#DataPrivacy</span>
+          <span class="tag">#AIForBusiness</span>
+          <span class="tag">#AITools</span>
+          <span class="tag">#AIEducation</span>
+          <span class="tag">#LearnAI</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#BusinessSecurity</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#EntrepreneurTips</span>
+          <span class="tag">#AIForEntrepreneurs</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#TechForBusiness</span>
+          <span class="tag">#MCPProtocol</span>
+          <span class="tag">#AIStrategy</span>
+          <span class="tag">#SaveThis</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#SolopreneurLife</span>
+          <span class="tag">#TeamCollaboration</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AIStack</span>
+          <span class="tag">#FutureOfWork</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · safety + trust focus</span>
+        <button class="copy-btn" onclick="copyTags('tags4', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ C06 ══ -->
+<div class="carousel-section" id="s5">
+  <div class="c-header">
+    <div class="c-number">06</div>
+    <div class="c-meta">
+      <div class="c-tag">Carousel 06 · Advanced</div>
+      <div class="c-title">Custom Connectors & MCP — Connect Anything</div>
+      <div class="c-desc">Advanced post targeting power users, developers, and ambitious founders. Positions ZagaPrime as the expert edge. Goal: shares, DMs, BUILD comments from serious operators.</div>
+    </div>
+  </div>
+
+  <div class="blocks">
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">✍</div>
+        <div class="block-title">Instagram Caption</div>
+        <div class="block-subtitle">Copy · Paste · Post</div>
+      </div>
+      <div class="block-body">
+        <div class="caption-text" id="cap5">Claude's directory has 50+ connectors.
+
+But what if the tool you need isn't on the list? 🤔
+
+That's where Custom Connectors and MCP come in.
+
+MCP = Model Context Protocol. It's the open standard Anthropic built that powers every connector in the directory.
+
+And here's the part most people don't know:
+
+You can point Claude to ANY MCP server — not just the ones in the public directory.
+
+That means you can connect Claude to:
+→ Internal tools your team built
+→ Niche SaaS apps with MCP support
+→ Custom databases or data sources
+→ Any service with a public MCP URL
+
+How to add a custom connector in 60 seconds:
+1️⃣ Go to Settings → Connectors
+2️⃣ Click '+' → Add custom connector
+3️⃣ Enter the connector name
+4️⃣ Paste the MCP server URL (from the tool's docs or API settings)
+5️⃣ Click Connect → complete authentication
+
+Done. Claude can now access that tool.
+
+On Claude Desktop, you can also connect to LOCAL MCP servers — meaning Claude can work with tools and files that never leave your machine.
+
+For builders who want to go deeper:
+MCP is fully open source. You can build your own MCP server for any tool and connect it to Claude — for personal use, your team, or the public directory.
+
+Most people use Claude out of the box.
+A few connect it to their entire stack.
+The ones building custom MCP servers?
+
+They're building AI systems no one else has.
+
+Swipe to see exactly how it works 👉
+
+💬 Comment <strong>"BUILD"</strong> and I'll send you the ZagaPrime Custom MCP Starter Guide — how to find, add, and manage custom connectors for any tool not in the public directory.
+
+—
+📍 ZagaPrime AI Hub — Any tool. Any service. Claude connects to it all.</div>
+      </div>
+      <div class="block-footer">
+        <div class="cta-pill"><div class="cta-dot"></div>Comment Trigger: BUILD</div>
+        <button class="copy-btn" onclick="copyText('cap5', this)">⎘ Copy Caption</button>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-header">
+        <div class="block-icon">#</div>
+        <div class="block-title">Hashtag Set</div>
+        <div class="block-subtitle">30 Tags · Advanced + Dev Focus</div>
+      </div>
+      <div class="block-body">
+        <div class="tags-grid" id="tags5">
+          <span class="tag">#ClaudeAI</span>
+          <span class="tag">#ClaudeConnectors</span>
+          <span class="tag">#MCPProtocol</span>
+          <span class="tag">#ModelContextProtocol</span>
+          <span class="tag">#CustomAI</span>
+          <span class="tag">#AIIntegration</span>
+          <span class="tag">#AIForDevelopers</span>
+          <span class="tag">#AIBuilders</span>
+          <span class="tag">#BuildWithAI</span>
+          <span class="tag">#AIAutomation</span>
+          <span class="tag">#AITools</span>
+          <span class="tag">#Anthropic</span>
+          <span class="tag">#OpenSource</span>
+          <span class="tag">#AIStack</span>
+          <span class="tag">#TechEntrepreneur</span>
+          <span class="tag">#DevTools</span>
+          <span class="tag">#SaaSTools</span>
+          <span class="tag">#WorkflowAutomation</span>
+          <span class="tag">#BusinessAutomation</span>
+          <span class="tag">#AIForBusiness</span>
+          <span class="tag">#FutureOfWork</span>
+          <span class="tag">#AICoworker</span>
+          <span class="tag">#LocalAI</span>
+          <span class="tag">#ClaudeDesktop</span>
+          <span class="tag">#AIProductivity</span>
+          <span class="tag">#SmallBusinessAI</span>
+          <span class="tag">#EntrepreneurAI</span>
+          <span class="tag">#AICarousel</span>
+          <span class="tag">#ZagaPrimeAI</span>
+          <span class="tag">#AIStrategy</span>
+        </div>
+      </div>
+      <div class="block-footer">
+        <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)">30 tags · advanced + developer focus</span>
+        <button class="copy-btn" onclick="copyTags('tags5', this)">⎘ Copy All Tags</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+function show(idx) {
+  document.querySelectorAll('.carousel-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('s' + idx).classList.add('active');
+  document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+  window.scrollTo({ top: 280, behavior: 'smooth' });
+}
+
+function copyText(id, btn) {
+  const el = document.getElementById(id);
+  // Get inner text, strip HTML tags
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '⎘ Copy Caption';
+      btn.classList.remove('copied');
+    }, 2200);
+  });
+}
+
+function copyTags(id, btn) {
+  const el = document.getElementById(id);
+  const tags = Array.from(el.querySelectorAll('.tag')).map(t => t.textContent).join(' ');
+  navigator.clipboard.writeText(tags).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '⎘ Copy All Tags';
+      btn.classList.remove('copied');
+    }, 2200);
+  });
+}
+</script>
+</body>
+</html>
