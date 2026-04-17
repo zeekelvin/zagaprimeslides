@@ -1,0 +1,122 @@
+{
+  "collection": {
+    "slug": "ai-follow-up-systems",
+    "title": "AI Follow-Up Systems",
+    "description": "A starter content drop for founders who want leads to stop leaking after the first conversation.",
+    "guide": {
+      "title": "Free Follow-Up Guide",
+      "description": "Pair this carousel with a simple guide or lead magnet page when you want the comments CTA to drive to a hosted resource.",
+      "url": "https://zagaprime.ai/follow-up-guide"
+    }
+  },
+  "carousels": [
+    {
+      "folder": "C01_Stop_Leaking_Leads",
+      "title": "Stop Leaking Leads After The First DM",
+      "summary": "This carousel reframes follow-up as a system problem, not a motivation problem.",
+      "cover_lines": [
+        "Most leads are not lost",
+        {
+          "pill": "because they said no"
+        },
+        "They are lost because",
+        {
+          "pill": "you never followed up"
+        }
+      ],
+      "slides": [
+        {
+          "label": "Reality",
+          "headline": "Silence does not mean the lead is dead.",
+          "body": [
+            "Most people are busy, distracted, or waiting for the right moment.",
+            "If your system only follows up when **you remember**, you will keep missing money."
+          ]
+        },
+        {
+          "label": "Problem",
+          "headline": "Manual follow-up breaks the second you get busy.",
+          "body": [
+            "You answer one DM.",
+            "You mean to follow up later.",
+            "Then five other tasks hit and the conversation disappears."
+          ]
+        },
+        {
+          "label": "Cost",
+          "headline": "Every dropped conversation compounds into lost revenue.",
+          "body": [
+            "One missed follow-up is not just one missed sale.",
+            "It is a pattern that quietly drains your pipeline every week."
+          ]
+        },
+        {
+          "label": "Shift",
+          "headline": "Follow-up should be a system, not a mood.",
+          "body": [
+            "You do not need more hustle.",
+            "You need a workflow that triggers the next message **without waiting for your memory**."
+          ]
+        },
+        {
+          "label": "System",
+          "headline": "Capture the lead, tag the stage, trigger the sequence.",
+          "body": [
+            "→ save the contact",
+            "→ assign the pipeline stage",
+            "→ trigger the right follow-up path",
+            "",
+            "That is how you stay consistent without being chained to your phone."
+          ]
+        },
+        {
+          "label": "Results",
+          "headline": "Now every conversation gets a second and third touchpoint.",
+          "body": [
+            "Your replies feel faster.",
+            "Your pipeline feels fuller.",
+            "And more warm leads actually make it to the sale."
+          ]
+        },
+        {
+          "label": "Decision",
+          "headline": "Keep chasing your inbox or build the machine once.",
+          "body": [
+            "The first option keeps you reactive.",
+            "The second gives you leverage."
+          ]
+        },
+        {
+          "label": "Moment",
+          "headline": "The money is not in getting more leads. It is in losing fewer of the ones you already have.",
+          "body": [
+            "That is the shift most founders miss.",
+            "Automation is not about replacing you.",
+            "It is about making sure the ball never gets dropped."
+          ]
+        }
+      ],
+      "close": {
+        "cta_word": "FOLLOWUP",
+        "headline_lines": [
+          "Want the follow-up",
+          {
+            "italic": "system?"
+          }
+        ],
+        "body": [
+          "Comment **FOLLOWUP** and I will send the guide.",
+          "Use it to map the messages, timing, and workflow."
+        ]
+      },
+      "caption": "Most leads do not disappear because they were bad leads.\n\nThey disappear because the follow-up lived in your head instead of a system.\n\nIf you are still relying on memory, screenshots, and random reminders, you are leaking revenue every week.\n\nBuild the workflow once.\nThen let it keep the conversation moving.\n\nComment FOLLOWUP if you want the guide.",
+      "hashtags": [
+        "#AIForBusiness",
+        "#LeadGeneration",
+        "#SalesAutomation",
+        "#BusinessSystems",
+        "#SMBMarketing"
+      ]
+    }
+  ]
+}

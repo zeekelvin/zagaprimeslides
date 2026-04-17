@@ -5,7 +5,7 @@ Usage:
   python scripts/add_carousel.py --slug connectors --slides /path/to/slides/ [--html /path/to/captions.html]
   python scripts/add_carousel.py --slug my-new-topic --slides /tmp/my_topic/ --html /tmp/my_topic.html
 
-This copies slides and optional HTML into the hub structure, then regenerates index.html.
+This copies slides and optional HTML into the hub structure, then rebuilds the hub and slide galleries.
 """
 import argparse, shutil, os, subprocess, sys
 
@@ -67,7 +67,7 @@ def main():
     # Rebuild index
     idx_script = os.path.join(HUB, "scripts", "build_index.py")
     if os.path.exists(idx_script):
-        print("\n  Rebuilding index.html...")
+        print("\n  Rebuilding hub pages...")
         subprocess.run([sys.executable, idx_script], cwd=HUB)
 
     print(f"\n✅ Done. Collection '{args.slug}' added to hub.")

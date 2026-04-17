@@ -1,20 +1,52 @@
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
-import os, math, numpy as np
+import os, math, tempfile, numpy as np
 
-OUT = "/mnt/user-data/outputs/zagaprime_carousels"
+OUT = os.environ.get("ZAGAPRIME_OUT", os.path.join(tempfile.gettempdir(), "zagaprime_carousels"))
 os.makedirs(OUT, exist_ok=True)
 
 # ─── FONTS ─────────────────────────────────────────────────────────────────
-F_BOLD   = "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf"
-F_BDIT   = "/usr/share/fonts/truetype/google-fonts/Poppins-BoldItalic.ttf"
-F_REG    = "/usr/share/fonts/truetype/google-fonts/Poppins-Regular.ttf"
-F_MED    = "/usr/share/fonts/truetype/google-fonts/Poppins-Medium.ttf"
-F_MONO   = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf"
-F_MONO_B = "/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf"
+def pick_font(*candidates):
+    for candidate in candidates:
+        if candidate and os.path.exists(candidate):
+            return candidate
+    return None
+
+F_BOLD   = pick_font(
+    "/usr/share/fonts/truetype/google-fonts/Poppins-Bold.ttf",
+    "/Library/Fonts/Inter_FXH-Bold.ttf",
+    "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+)
+F_BDIT   = pick_font(
+    "/usr/share/fonts/truetype/google-fonts/Poppins-BoldItalic.ttf",
+    "/Library/Fonts/Inter_FXH-BoldItalic.ttf",
+    "/System/Library/Fonts/Supplemental/Arial Bold Italic.ttf",
+)
+F_REG    = pick_font(
+    "/usr/share/fonts/truetype/google-fonts/Poppins-Regular.ttf",
+    "/Library/Fonts/Inter_FXH-Regular.ttf",
+    "/System/Library/Fonts/Supplemental/Arial.ttf",
+)
+F_MED    = pick_font(
+    "/usr/share/fonts/truetype/google-fonts/Poppins-Medium.ttf",
+    "/Library/Fonts/Inter_FXH-Regular.ttf",
+    "/System/Library/Fonts/Supplemental/Arial.ttf",
+)
+F_MONO   = pick_font(
+    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
+    "/System/Library/Fonts/Supplemental/Andale Mono.ttf",
+)
+F_MONO_B = pick_font(
+    "/usr/share/fonts/truetype/liberation/LiberationMono-Bold.ttf",
+    "/System/Library/Fonts/Supplemental/Andale Mono.ttf",
+)
 
 def fnt(path, sz):
-    try: return ImageFont.truetype(path, sz)
-    except: return ImageFont.load_default()
+    try:
+        if path:
+            return ImageFont.truetype(path, sz)
+    except:
+        pass
+    return ImageFont.load_default()
 
 W, H = 1080, 1080
 
@@ -99,6 +131,8 @@ def add_dot_grid(draw, spacing=54, dot_r=1):
 # ─── PAINT STROKE BEHIND CATEGORY WORD ─────────────────────────────────────
 def draw_paint_stroke(img, x, y, w, h):
     """Warm tan watercolor-like brush stroke behind category text."""
+    w = max(60, int(w))
+    h = max(22, int(h))
     stroke_layer = Image.new('RGBA', (W, H), (0,0,0,0))
     sd = ImageDraw.Draw(stroke_layer)
 
@@ -111,6 +145,8 @@ def draw_paint_stroke(img, x, y, w, h):
         (-10, -8,  w+20,   h-5,  120),
     ]
     for ox, oy, sw, sh, alpha in offsets:
+        sw = max(20, int(sw))
+        sh = max(12, int(sh))
         c = (*PAINT_COLOR, alpha)
         sd.ellipse([x+ox, y+oy, x+ox+sw, y+oy+sh], fill=c)
 
